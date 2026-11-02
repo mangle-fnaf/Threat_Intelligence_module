@@ -9,6 +9,8 @@
 
     <h1>ThreatHunter Threat Intelligence Module</h1>
 
+    <p>Analyze and classify Indicators of Compromise (IOCs).</p>
+
     <!-- IOC input form -->
     <form method="POST">
 
@@ -25,7 +27,7 @@
 
     </form>
 
-    <!-- Display results after analysis -->
+    <!-- Display analysis results -->
     {% if result %}
 
         <h2>Analysis Result</h2>
@@ -33,6 +35,41 @@
         <p><strong>IOC:</strong> {{ ioc }}</p>
 
         <p><strong>Type:</strong> {{ result }}</p>
+
+    {% endif %}
+
+    <!-- Display VirusTotal enrichment results -->
+    {% if vt_result %}
+
+        <h3>VirusTotal Results</h3>
+
+        {% if vt_result.error %}
+
+            <p><strong>Error:</strong> {{ vt_result.error }}</p>
+
+        {% else %}
+
+            <p>
+                <strong>Reputation:</strong>
+                {{ vt_result.reputation }}
+            </p>
+
+            <p>
+                <strong>Malicious:</strong>
+                {{ vt_result.malicious }}
+            </p>
+
+            <p>
+                <strong>Suspicious:</strong>
+                {{ vt_result.suspicious }}
+            </p>
+
+            <p>
+                <strong>Harmless:</strong>
+                {{ vt_result.harmless }}
+            </p>
+
+        {% endif %}
 
     {% endif %}
 

@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
+
 from parsers.ioc_parser import detect_ioc_type
+from integrations.virustotal import check_virustotal_ip
 
 app = Flask(__name__)
 
@@ -7,8 +9,9 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def home():
 
-    # Store values for displaying on the page
+    # Store values for displaying results
     result = None
+    vt_result = None
     ioc = None
 
     # Run analysis when form is submitted
@@ -16,13 +19,19 @@ def home():
 
         ioc = request.form.get("ioc")
 
-        # Determine IOC type
+        # Detect IOC type
         result = detect_ioc_type(ioc)
+
+        # Only lookup IP addresses for now
+        if result == "IPv4":
+
+            vt_result = check_virustotal_ip(ioc)
 
     return render_template(
         "index.html",
         result=result,
-        ioc=ioc
+        ioc=ioc,
+        vt_result=vt_result
     )
 
 
