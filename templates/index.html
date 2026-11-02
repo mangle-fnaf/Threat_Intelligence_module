@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThreatHunter Threat Intelligence Module</title>
+</head>
+<body>
+
+    <h1>ThreatHunter Threat Intelligence Module</h1>
+
+    <!-- IOC input form -->
+    <form method="POST">
+
+        <input
+            type="text"
+            name="ioc"
+            placeholder="Enter IOC"
+            required
+        >
+
+        <button type="submit">
+            Analyze
+        </button>
+
+    </form>
+
+    <!-- Display results after analysis -->
+    {% if result %}
+
+        <h2>Analysis Result</h2>
+
+        <p><strong>IOC:</strong> {{ ioc }}</p>
+
+        <p><strong>Type:</strong> {{ result }}</p>
+
+    {% endif %}
+
+</body>
+</html>
