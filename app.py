@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from parsers.ioc_parser import detect_ioc_type
 from integrations.virustotal import check_virustotal_ip
 from integrations.abuseipdb import check_abuseipdb
+from scoring.risk_engine import calculate_risk_score
 
 app = Flask(__name__)
 
@@ -14,6 +15,7 @@ def home():
     result = None
     vt_result = None
     abuse_result = None
+    risk_result = None
     ioc = None
 
     # Run analysis when form is submitted
@@ -31,12 +33,19 @@ def home():
 
             abuse_result = check_abuseipdb(ioc)
 
+            # Calculate overall risk score
+            risk_result = calculate_risk_score(
+                vt_result,
+                abuse_result
+            )
+
     return render_template(
         "index.html",
         result=result,
         ioc=ioc,
         vt_result=vt_result,
-        abuse_result=abuse_result
+        abuse_result=abuse_result,
+        risk_result=risk_result
     )
 
 

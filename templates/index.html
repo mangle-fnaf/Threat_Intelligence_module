@@ -91,5 +91,22 @@
 
     {% endif %}
 
+    <!-- Risk Assessment -->
+    {% if risk_result %}
+
+        <h3>Risk Assessment</h3>
+
+        <p>
+            <strong>Risk Score:</strong>
+            {{ risk_result.risk_score }}
+        </p>
+
+        <p>
+            <strong>Severity:</strong>
+            {{ risk_result.severity }}
+        </p>
+
+    {% endif %}
+
 </body>
 </html>
