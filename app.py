@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 
 from parsers.ioc_parser import detect_ioc_type
 from integrations.virustotal import check_virustotal_ip
+from integrations.abuseipdb import check_abuseipdb
 
 app = Flask(__name__)
 
@@ -12,6 +13,7 @@ def home():
     # Store values for displaying results
     result = None
     vt_result = None
+    abuse_result = None
     ioc = None
 
     # Run analysis when form is submitted
@@ -27,11 +29,14 @@ def home():
 
             vt_result = check_virustotal_ip(ioc)
 
+            abuse_result = check_abuseipdb(ioc)
+
     return render_template(
         "index.html",
         result=result,
         ioc=ioc,
-        vt_result=vt_result
+        vt_result=vt_result,
+        abuse_result=abuse_result
     )
 
 

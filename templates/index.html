@@ -38,7 +38,7 @@
 
     {% endif %}
 
-    <!-- Display VirusTotal enrichment results -->
+    <!-- VirusTotal Results -->
     {% if vt_result %}
 
         <h3>VirusTotal Results</h3>
@@ -49,24 +49,42 @@
 
         {% else %}
 
+            <p><strong>Reputation:</strong> {{ vt_result.reputation }}</p>
+
+            <p><strong>Malicious:</strong> {{ vt_result.malicious }}</p>
+
+            <p><strong>Suspicious:</strong> {{ vt_result.suspicious }}</p>
+
+            <p><strong>Harmless:</strong> {{ vt_result.harmless }}</p>
+
+        {% endif %}
+
+    {% endif %}
+
+    <!-- AbuseIPDB Results -->
+    {% if abuse_result %}
+
+        <h3>AbuseIPDB Results</h3>
+
+        {% if abuse_result.error %}
+
+            <p><strong>Error:</strong> {{ abuse_result.error }}</p>
+
+        {% else %}
+
             <p>
-                <strong>Reputation:</strong>
-                {{ vt_result.reputation }}
+                <strong>Abuse Score:</strong>
+                {{ abuse_result.abuse_score }}
             </p>
 
             <p>
-                <strong>Malicious:</strong>
-                {{ vt_result.malicious }}
+                <strong>Country:</strong>
+                {{ abuse_result.country }}
             </p>
 
             <p>
-                <strong>Suspicious:</strong>
-                {{ vt_result.suspicious }}
-            </p>
-
-            <p>
-                <strong>Harmless:</strong>
-                {{ vt_result.harmless }}
+                <strong>Total Reports:</strong>
+                {{ abuse_result.reports }}
             </p>
 
         {% endif %}
