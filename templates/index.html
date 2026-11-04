@@ -72,20 +72,11 @@
 
         {% else %}
 
-            <p>
-                <strong>Abuse Score:</strong>
-                {{ abuse_result.abuse_score }}
-            </p>
+            <p><strong>Abuse Score:</strong> {{ abuse_result.abuse_score }}</p>
 
-            <p>
-                <strong>Country:</strong>
-                {{ abuse_result.country }}
-            </p>
+            <p><strong>Country:</strong> {{ abuse_result.country }}</p>
 
-            <p>
-                <strong>Total Reports:</strong>
-                {{ abuse_result.reports }}
-            </p>
+            <p><strong>Total Reports:</strong> {{ abuse_result.reports }}</p>
 
         {% endif %}
 
@@ -96,15 +87,34 @@
 
         <h3>Risk Assessment</h3>
 
-        <p>
-            <strong>Risk Score:</strong>
-            {{ risk_result.risk_score }}
-        </p>
+        <p><strong>Risk Score:</strong> {{ risk_result.risk_score }}</p>
 
-        <p>
-            <strong>Severity:</strong>
-            {{ risk_result.severity }}
-        </p>
+        <p><strong>Severity:</strong> {{ risk_result.severity }}</p>
+
+    {% endif %}
+
+    <!-- MITRE ATT&CK Mapping -->
+    {% if mitre_result is not none %}
+
+        <h3>MITRE ATT&amp;CK Mapping</h3>
+
+        <ul>
+
+            {% for technique in mitre_result %}
+
+                <li>
+                    <strong>{{ technique.id }}</strong>
+                    -
+                    {{ technique.name }}
+                </li>
+
+            {% else %}
+
+                <li>No ATT&amp;CK techniques mapped (no malicious activity detected)</li>
+
+            {% endfor %}
+
+        </ul>
 
     {% endif %}
 
