@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Intelligence Report</title>
+</head>
+<body>
+
+    <h1>Threat Intelligence Report</h1>
+
+    <hr>
+
+    <h2>IOC Information</h2>
+
+    <p><strong>IOC:</strong> {{ ioc }}</p>
+
+    <h2>VirusTotal Results</h2>
+
+    <p><strong>Reputation:</strong> {{ vt_result.reputation }}</p>
+    <p><strong>Malicious:</strong> {{ vt_result.malicious }}</p>
+    <p><strong>Suspicious:</strong> {{ vt_result.suspicious }}</p>
+
+    <h2>AbuseIPDB Results</h2>
+
+    <p><strong>Abuse Score:</strong> {{ abuse_result.abuse_score }}</p>
+    <p><strong>Country:</strong> {{ abuse_result.country }}</p>
+    <p><strong>Reports:</strong> {{ abuse_result.reports }}</p>
+
+    <h2>Risk Assessment</h2>
+
+    <p><strong>Risk Score:</strong> {{ risk_result.risk_score }}</p>
+    <p><strong>Severity:</strong> {{ risk_result.severity }}</p>
+
+    <h2>MITRE ATT&CK Techniques</h2>
+
+    <ul>
+
+        {% for technique in mitre_result %}
+
+            <li>
+                {{ technique.id }}
+                -
+                {{ technique.name }}
+            </li>
+
+        {% endfor %}
+
+    </ul>
+
+</body>
+</html>

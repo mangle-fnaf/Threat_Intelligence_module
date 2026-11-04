@@ -11,7 +11,6 @@
 
     <p>Analyze and classify Indicators of Compromise (IOCs).</p>
 
-    <!-- IOC input form -->
     <form method="POST">
 
         <input
@@ -27,7 +26,6 @@
 
     </form>
 
-    <!-- Display analysis results -->
     {% if result %}
 
         <h2>Analysis Result</h2>
@@ -38,83 +36,96 @@
 
     {% endif %}
 
-    <!-- VirusTotal Results -->
     {% if vt_result %}
 
         <h3>VirusTotal Results</h3>
 
-        {% if vt_result.error %}
+        <p><strong>Reputation:</strong> {{ vt_result.reputation }}</p>
 
-            <p><strong>Error:</strong> {{ vt_result.error }}</p>
+        <p><strong>Malicious:</strong> {{ vt_result.malicious }}</p>
 
-        {% else %}
+        <p><strong>Suspicious:</strong> {{ vt_result.suspicious }}</p>
 
-            <p><strong>Reputation:</strong> {{ vt_result.reputation }}</p>
-
-            <p><strong>Malicious:</strong> {{ vt_result.malicious }}</p>
-
-            <p><strong>Suspicious:</strong> {{ vt_result.suspicious }}</p>
-
-            <p><strong>Harmless:</strong> {{ vt_result.harmless }}</p>
-
-        {% endif %}
+        <p><strong>Harmless:</strong> {{ vt_result.harmless }}</p>
 
     {% endif %}
 
-    <!-- AbuseIPDB Results -->
     {% if abuse_result %}
 
         <h3>AbuseIPDB Results</h3>
 
-        {% if abuse_result.error %}
+        <p>
+            <strong>Abuse Score:</strong>
+            {{ abuse_result.abuse_score }}
+        </p>
 
-            <p><strong>Error:</strong> {{ abuse_result.error }}</p>
+        <p>
+            <strong>Country:</strong>
+            {{ abuse_result.country }}
+        </p>
+
+        <p>
+            <strong>Total Reports:</strong>
+            {{ abuse_result.reports }}
+        </p>
+
+    {% endif %}
+
+    {% if risk_result %}
+
+        <h3>Risk Assessment</h3>
+
+        <p>
+            <strong>Risk Score:</strong>
+            {{ risk_result.risk_score }}
+        </p>
+
+        <p>
+            <strong>Severity:</strong>
+            {{ risk_result.severity }}
+        </p>
+
+    {% endif %}
+
+    {% if result %}
+
+        <h3>MITRE ATT&CK Mapping</h3>
+
+        {% if mitre_result %}
+
+            <ul>
+
+                {% for technique in mitre_result %}
+
+                    <li>
+                        <strong>{{ technique.id }}</strong>
+                        -
+                        {{ technique.name }}
+                    </li>
+
+                {% endfor %}
+
+            </ul>
 
         {% else %}
 
-            <p><strong>Abuse Score:</strong> {{ abuse_result.abuse_score }}</p>
-
-            <p><strong>Country:</strong> {{ abuse_result.country }}</p>
-
-            <p><strong>Total Reports:</strong> {{ abuse_result.reports }}</p>
+            <p>No ATT&CK techniques mapped.</p>
 
         {% endif %}
 
     {% endif %}
 
-    <!-- Risk Assessment -->
-    {% if risk_result %}
+    {% if result %}
 
-        <h3>Risk Assessment</h3>
+        <form action="/report" method="POST">
 
-        <p><strong>Risk Score:</strong> {{ risk_result.risk_score }}</p>
+            <button type="submit">
 
-        <p><strong>Severity:</strong> {{ risk_result.severity }}</p>
+                Generate Intelligence Report
 
-    {% endif %}
+            </button>
 
-    <!-- MITRE ATT&CK Mapping -->
-    {% if mitre_result is not none %}
-
-        <h3>MITRE ATT&amp;CK Mapping</h3>
-
-        <ul>
-
-            {% for technique in mitre_result %}
-
-                <li>
-                    <strong>{{ technique.id }}</strong>
-                    -
-                    {{ technique.name }}
-                </li>
-
-            {% else %}
-
-                <li>No ATT&amp;CK techniques mapped (no malicious activity detected)</li>
-
-            {% endfor %}
-
-        </ul>
+        </form>
 
     {% endif %}
 
