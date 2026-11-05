@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 from parsers.ioc_parser import detect_ioc_type
 from integrations.virustotal import check_virustotal_ip
@@ -32,7 +32,8 @@ def home():
     # Run analysis when form is submitted
     if request.method == "POST":
 
-        ioc = request.form.get("ioc")
+        # Remove any spaces copied in before or after the IOC
+        ioc = (request.form.get("ioc") or "").strip()
 
         # Detect IOC type
         result = detect_ioc_type(ioc)
@@ -84,6 +85,11 @@ def home():
 
 @app.route("/report", methods=["POST"])
 def report():
+
+    # No IP has been analysed yet (e.g. after restarting the app),
+    # so send the user back to the search page instead of crashing
+    if not last_report:
+        return redirect(url_for("home"))
 
     return render_template(
         "report.html",

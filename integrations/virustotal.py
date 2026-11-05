@@ -24,7 +24,8 @@ def check_virustotal_ip(ip):
         # Send request to VirusTotal
         response = requests.get(
             url,
-            headers=headers
+            headers=headers,
+            timeout=15
         )
 
         if response.status_code == 200:

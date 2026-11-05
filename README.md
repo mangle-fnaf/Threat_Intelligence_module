@@ -12,7 +12,7 @@ The application classifies user-supplied IOCs, enriches them using real-world th
 
 Supports identification of:
 
-- IPv4 Addresses
+- IPv4 Addresses (validated, with private/internal IPs such as `192.168.x.x` recognised and not looked up)
 - Domains
 - URLs
 - MD5 Hashes
@@ -87,7 +87,7 @@ Generates HTML intelligence reports containing:
 Tracks key intelligence metrics including:
 
 - Total IOCs Analysed
-- High-Risk IOCs
+- High-Risk IOCs (risk score of 60 or above)
 - Average Risk Score
 
 ---
@@ -114,6 +114,9 @@ Threat_Intelligence_Module/
 │   ├── __init__.py
 │   └── statistics.py
 │
+├── Reports/
+│   └── report_generator.py
+│
 ├── integrations/
 │   ├── abuseipdb.py
 │   └── virustotal.py
@@ -135,7 +138,9 @@ Threat_Intelligence_Module/
 ├── screenshots/
 │
 ├── app.py
+├── .env.example
 ├── requirements.txt
+├── LICENSE
 └── README.md
 ```
 
@@ -165,10 +170,6 @@ Dashboard Statistics
 
 ## Screenshots
 
-### IOC Detection
-
-![IOC Detection](screenshots/commit1-ioc-detection.png)
-
 ### VirusTotal Integration
 
 ![VirusTotal Integration](screenshots/commit2-virustotal-enrichment.png)
@@ -187,7 +188,7 @@ Dashboard Statistics
 
 ### Intelligence Report Generation
 
-![Intelligence Report](screenshots/commit6-html-intelligence-report.png)
+![Intelligence Report](screenshots/Commit6-risk-report.png)
 
 ### Dashboard & Statistics
 
@@ -217,7 +218,12 @@ pip install -r requirements.txt
 
 ### Configure Environment Variables
 
-Create a `.env` file inside the project root:
+Both APIs offer free keys for personal use:
+
+- VirusTotal: create a free account at [virustotal.com](https://www.virustotal.com/) and copy your API key from your profile
+- AbuseIPDB: create a free account at [abuseipdb.com](https://www.abuseipdb.com/) and create a key under **My API**
+
+Copy `.env.example`, rename the copy to `.env`, and add your keys:
 
 ```env
 VT_API_KEY=your_virustotal_api_key
@@ -246,8 +252,19 @@ http://127.0.0.1:5000
 
 ---
 
+## Limitations
+
+- Only IPv4 addresses are currently enriched. Domains, URLs and hashes are detected but not yet looked up.
+- The free VirusTotal API allows 4 lookups per minute and 500 per day; the free AbuseIPDB plan allows 1,000 checks per day.
+- Dashboard statistics are stored in memory, so they reset when the application restarts.
+- MITRE ATT&CK mappings are based on reputation scores rather than observed attacker behaviour, so they indicate likely techniques rather than confirmed ones.
+- The app runs Flask in debug mode and is intended for local use only.
+
+---
+
 ## Future Improvements
 
+- Enrichment for domains, URLs and file hashes
 - Additional Threat Intelligence Providers
 - IOC History Tracking
 - PDF Report Export

@@ -9,11 +9,6 @@ load_dotenv()
 # Get API key securely (strip removes any stray spaces or quotes)
 API_KEY = (os.getenv("ABUSEIPDB_API_KEY") or "").strip().strip('"').strip("'")
 
-if not API_KEY:
-    print("AbuseIPDB API key not found - check your .env file")
-else:
-    print(f"API Key Loaded: {API_KEY[:8]}...")
-
 
 def check_abuseipdb(ip):
 
@@ -44,8 +39,6 @@ def check_abuseipdb(ip):
             timeout=15
         )
 
-        print("Status Code:", response.status_code)
-        print("Response:", response.text)
 
         if response.status_code == 200:
 

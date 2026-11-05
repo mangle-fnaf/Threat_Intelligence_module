@@ -11,21 +11,28 @@ def map_to_mitre(
     if risk_result["severity"] == "LOW":
         return techniques
 
-    if vt_result and vt_result["malicious"] >= 1:
+    # Ignore any source whose lookup failed and returned an error instead
+    if not vt_result or "error" in vt_result:
+        vt_result = {}
+
+    if not abuse_result or "error" in abuse_result:
+        abuse_result = {}
+
+    if vt_result.get("malicious", 0) >= 1:
 
         techniques.append({
             "id": "T1071",
             "name": "Application Layer Protocol"
         })
 
-    if abuse_result and abuse_result["abuse_score"] >= 50:
+    if abuse_result.get("abuse_score", 0) >= 50:
 
         techniques.append({
             "id": "T1110",
             "name": "Brute Force"
         })
 
-    if abuse_result and abuse_result["reports"] >= 100:
+    if abuse_result.get("reports", 0) >= 100:
 
         techniques.append({
             "id": "T1595",
