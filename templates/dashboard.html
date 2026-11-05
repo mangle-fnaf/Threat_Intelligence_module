@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Threat Intelligence Dashboard</title>
+</head>
+<body>
+
+    <h1>Threat Intelligence Dashboard</h1>
+
+    <hr>
+
+    <p>
+        <strong>Total IOCs Analysed:</strong>
+        {{ stats.total_iocs }}
+    </p>
+
+    <p>
+        <strong>High Risk IOCs:</strong>
+        {{ stats.high_risk_iocs }}
+    </p>
+
+    <p>
+        <strong>Average Risk Score:</strong>
+        {{ stats.average_risk_score }}
+    </p>
+
+</body>
+</html>

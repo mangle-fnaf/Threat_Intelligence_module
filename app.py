@@ -5,6 +5,10 @@ from integrations.virustotal import check_virustotal_ip
 from integrations.abuseipdb import check_abuseipdb
 from scoring.risk_engine import calculate_risk_score
 from mitre.mapper import map_to_mitre
+from dashboard.statistics import (
+    update_statistics,
+    dashboard_stats
+)
 
 app = Flask(__name__)
 
@@ -46,6 +50,11 @@ def home():
                 abuse_result
             )
 
+            # Update dashboard statistics
+            update_statistics(
+                risk_result["risk_score"]
+            )
+
             # Map findings to MITRE ATT&CK
             mitre_result = map_to_mitre(
                 vt_result,
@@ -53,7 +62,7 @@ def home():
                 risk_result
             )
 
-            # Store results for report generation
+            # Store report data
             last_report = {
                 "ioc": ioc,
                 "vt_result": vt_result,
@@ -83,6 +92,15 @@ def report():
         abuse_result=last_report["abuse_result"],
         risk_result=last_report["risk_result"],
         mitre_result=last_report["mitre_result"]
+    )
+
+
+@app.route("/dashboard")
+def dashboard():
+
+    return render_template(
+        "dashboard.html",
+        stats=dashboard_stats
     )
 
 
